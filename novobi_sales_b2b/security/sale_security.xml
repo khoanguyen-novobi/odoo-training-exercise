@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_sale_person" model="res.groups">
+        <field name="name">Sale Person</field>
+        <field name="category_id" ref="base.module_category_sale"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="sale_request_record_rule" model="ir.rule">
+        <field name="name">Allow allocated sale person edit</field>
+        <field name="model_id" ref="model_sale_request"/>
+        <field name="domain_force">[('sale_person','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/> 
+    </record>
+
+</odoo>

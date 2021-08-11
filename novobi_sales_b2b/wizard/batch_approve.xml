@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_salerequest_batch_approve" model="ir.ui.view">
+        <field name="name">view.salerequest.batch.approve</field>
+        <field name="model">sale.request.batchapprove.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Batch Approve">
+                <p>
+                    Apply updating on the selected record(s)?
+                </p>
+                <footer>
+                    <button string="Confirm" name="multi_approve" type="object" default_focus="1" class="btn-primary"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_salerequest_batch_approve" model="ir.actions.act_window">
+        <field name="name">Batch Approve</field>
+        <field name="res_model">sale.request.batchapprove.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="binding_model_id" ref="model_sale_request"/>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_salerequest_batch_approve"/>
+    </record>
+
+
+</odoo>

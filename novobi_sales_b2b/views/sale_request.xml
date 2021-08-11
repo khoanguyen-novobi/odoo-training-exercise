@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='sale_request_action' model='ir.actions.act_window'>
+        <field name="name">Sale Request</field>
+        <field name="res_model">sale.request</field>
+        <field name="view_mode">tree,form,pivot</field>
+    </record>
+
+
+    <!-- <menuitem name="Novobi Sale B2B" id="sale_request_base_menu" /> -->
+    <menuitem name="Sale Requests" id="request_menu" parent="sale.sale_order_menu" action="sale_request_action" sequence="0"/>
+
+    <!-- Form View -->
+    <record id="sale_request_view_form" model="ir.ui.view">
+        <field name="name">Sale Request Form</field>
+        <field name="model">sale.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button id="button_approve" string="Approve" name="action_approve" type="object" class="btn-primary" attrs="{'invisible':['|',('sale_state','=','approve'),('sale_state','=', 'rejected')]}"/>
+                    <button id="button_rejected" string="Rejected" name="action_rejected" type="object" class="btn-primary" attrs="{'invisible':['|',('sale_state','=','approve'),('sale_state','=', 'rejected')]}"/>
+                    <field name="sale_state" widget="statusbar"></field>
+                </header>
+                <group>
+                    <group>
+                        <field name="reference"/>
+                        <field name="date" />
+                        <field name="sale_person" />
+                        <field name="total" />
+                    </group>
+                    <group>
+                        <field name="customer" />
+                    </group>
+                    <group>
+                        <field name="add_product_lines">
+                            <tree editable="bottom">
+                                <field name="product_id"/>
+                                <field name="description"/>
+                                <field name="pro_qty"/>
+                                <field name="unit_price"/>
+                                <field name="tax"/>
+                                <field name="sub_total"/>
+                            </tree>
+                        </field>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree(list) View -->
+    <record id="sale_request_view_tree" model="ir.ui.view">
+        <field name="name">Sale Request List</field>
+        <field name="model">sale.request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="reference"/>
+                <field name="date"/>
+                <field name="sale_person" widget="many2one_tags"/>
+                <field name="total" />
+                <field name="sale_state" decoration-success="sale_state == 'approve'" decoration-info="sale_state == 'pending'" widget="badge"/>
+                <field name="fulfill_state" />
+                <field name="items" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="sale_request_view_pivot" model="ir.ui.view">
+        <field name="name">sale.reqquest.view.pivot</field>
+        <field name="model">sale.request</field>
+        <field name="arch" type="xml">
+            <pivot string="Sale Request" disable_linking="true">
+                <field name="customer" type="row"/>
+                <field name="date" type="col"/>
+            </pivot>
+        </field>
+    </record>
+</odoo>

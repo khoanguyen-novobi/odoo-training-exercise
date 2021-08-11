@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sale_person,sale.sale_person,model_sale_request,base.group_user,1,1,1,1
+sale_person_line,sale.sale_person_line,model_sale_request_line,base.group_user,1,1,0,1
+sale_approve,sale.batch_approve,model_sale_request_batchapprove_wizard,base.group_user,1,1,1,1

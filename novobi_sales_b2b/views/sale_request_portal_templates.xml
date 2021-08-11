@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add Sale Request to document portal -->
+    <template id="portal_my_home_sale_request" name="Show Sale Request" customize_show="True" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Sale Request (Novobi B-2-B)</t>
+                <t t-set="url" t-value="'/my/sale-request'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- List all current sale request -->
+    <template id="portal_my_sale_request" name="My Sale Request">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar"></t>
+            <div id="create_button"></div>
+            <t t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Sale Request #</th>
+                        <th>Date</th>
+                        <th>Sale Person</th>
+                        <th>Total</th>
+                        <th>Sales</th>
+                        <th>Fulfillment</th>
+                        <th>Items</th>
+                    </tr>
+                </thead>
+                <t t-foreach="sr" t-as="sr">
+                    <tr>
+                        <td><a t-att-href="sr.get_portal_url()"><t t-esc="sr.reference"/></a></td>
+                        <td><t t-esc="sr.date"/></td>
+                        <td><t t-esc="sr.sale_person.name"/></td>
+                        <td><t t-esc="sr.total"/></td>
+                        <td><t t-esc="sr.sale_state"/></td>
+                        <td><t t-esc="sr.fulfill_state"/></td>
+                        <td><t t-esc="sr.items"/></td>
+                    </tr>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Sale Request create template -->
+    <template id="sale_request_create" name="Create Sale Request">
+        <t t-call="portal.portal_layout">
+            <div id='create_form'></div>
+            <div id='submit'></div>
+        </t>
+    </template>
+
+    <!-- Sale Request detail template -->
+    <template id="sale_request_detail" name="Sale Request Detail">
+        <t t-call="portal.portal_layout">
+            <h2>Sale Request Details</h2>
+            <p>Reference: <t t-esc="sr.reference"/></p>
+            <p>Sale Person: <t t-esc="sr.sale_person.name"/></p>
+            <t t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Products</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <t t-foreach="sr.add_product_lines" t-as="line">
+                    <tr>
+                        <td><t t-esc="line.product_id.name"/></td>
+                        <td><t t-esc="line.pro_qty"/></td>
+                        <td><t t-esc="line.unit_price"/></td>
+                        <td><t t-esc="line.sub_total"/></td>
+                    </tr>
+                </t>
+            </t>
+            <div id="timeline">
+                <p>Timeline</p>
+                <ul>
+                    <t t-if="sr.get_delivery_done_date()">
+                        <li>Delivery done date: <t t-esc="sr.get_delivery_done_date()"/></li>
+                    </t>
+                    <t t-if="sr.get_all_delivery_order()">
+                        <li>Delivery create date: <t t-esc="sr.get_all_delivery_order()"/></li>
+                    </t>
+                    <t t-if="sr.get_sale_state() == 'sale'">
+                        <li>Sale confirm date: <t t-esc="sr.get_sale_date()"/></li>                        
+                    </t>
+                    <t t-if="sr.get_sale_state() == 'rejected'">
+                        <li>Sale reject date: <t t-esc="sr.cancelled_date"/></li>                        
+                    </t>
+                    <t t-if="sr.get_quotation_date()">
+                        <li>Quotation create date: <t t-esc="sr.get_quotation_date()"/></li>                        
+                    </t>
+                    <t t-if="sr.confirmed_date">
+                        <li>Sale request approve date: <t t-esc="sr.confirmed_date"/></li>                        
+                    </t>
+                    <t t-if="sr.date">
+                        <li>Sale request create date: <t t-esc="sr.date"/></li>                        
+                    </t>
+                </ul>
+            </div>
+        </t>
+    </template>
+
+    <!-- Inherit front end assets and add OWL Component -->
+    <template id="asset_frontend_inherit" inherit_id="web.assets_frontend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/novobi_sales_b2b/static/src/js/component.js"></script>
+        </xpath>
+    </template>
+
+</odoo>
