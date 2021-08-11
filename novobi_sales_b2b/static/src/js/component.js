@@ -25,9 +25,6 @@ odoo.define("my.component", function (require) {
 	}
 
 	class CreateButton extends Component {
-		constructor() {
-			super(...arguments);
-		}
 		static template = xml`<button id="btn_insert_economic_data" type="button" class="btn btn-success" t-on-click="link">Create</button>`;
 
 		link() {
